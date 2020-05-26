@@ -4,29 +4,6 @@ export const setUser=(user)=>{
     return {type:'SET_USER',payload:user }
 }
 
-export const startRegisterUser=(formData,redirect)=>{
-    return (dispatch)=>{
-        axios.post('/users/register',formData)
-        .then(response=>{
-            // console.log(response.data)
-            if(response.data.hasOwnProperty('errors'))
-            {
-                alert(response.data.message)
-            } 
-            else
-            {
-                alert('successfully registered')
-                // props.history.push('/users/login')
-                redirect()
-            }
-        })
-        .catch(err=>{
-            console.log(err)
-        })
-        // console.log('action generator',formData)
-    }
-}
-
 export const startLoginUser=(loginData,redirect)=>{
     return (dispatch)=>{
         axios.post('/users/login',loginData)
@@ -68,18 +45,34 @@ export const startGetUser=()=>{
     }
 }
 
-export const startUserLogout=()=>{
+export const startRegisterUser=(formData,redirect)=>{
     return (dispatch)=>{
-        axios.delete('/users/logout',{headers:{'authorization':localStorage.getItem('authToken')}})
-        .then((response)=>{
-            if(response.data.notice)
+        axios.post('/users/register',formData)
+        .then(response=>{
+            // console.log(response.data)
+            if(response.data.hasOwnProperty('errors'))
             {
-                alert(response.data.notice)
-                localStorage.removeItem('authToken')
-                dispatch(setUser({}))
-                window.location.href='/'
+                alert(response.data.message)
+            } 
+            else
+            {
+                alert('successfully registered')
+                // props.history.push('/users/login')
+                redirect()
             }
         })
+        .catch(err=>{
+            console.log(err)
+        })
+        // console.log('action generator',formData)
+    }
+}
+
+export const startUserLogout=()=>{
+    return (dispatch)=>{
+        localStorage.removeItem('authToken')
+        dispatch(setUser({}))
+        window.location.href='/'
     }
     
 }

@@ -12,20 +12,21 @@ class AddTask extends React.Component
             title:'',
             description:"",
             completed:false,
-            duedate:''
+            dueDate:''
         }
     }
     handleChange=(e)=>{
         this.setState({[e.target.name]:e.target.value})
     }
-    // handleSelect=(date)=>{
-    //     this.setState({duedate:date})
-    // }
+    handleCheck=()=>{
+        this.setState((prevState)=>({completed:!prevState.completed}))
+    }
     handleSubmit=(e)=>{
         e.preventDefault()
         const formData={
             title:this.state.title,
             description:this.state.description,
+            dueDate:this.state.dueDate
         }
         console.log('add task',formData)
         const redirect=()=>{
@@ -54,19 +55,31 @@ class AddTask extends React.Component
                         <textarea 
                             type='text'
                             name='description'
+                            cols='30'
+                            rows='10'
                             value={this.state.description}
                             onChange={this.handleChange}
                             placeholder='task description'
                         /><br/><br/>
                     </label>
-                    <label> Due Date:
-                        <input
+                    <label>
+                        <input 
+                            type='checkbox'
+                            name='completed'
+                            value={this.state.completed}
+                            checked={this.state.completed}
+                            onChange={this.handleCheck}
+                        /> completed
+                    </label><br/><br/>
+                    <label>DueDate:
+                        <input 
                             type='date'
-                            value={this.state.duedate}
-                            name='duedate'
+                            name='dueDate'
+                            value={this.state.dueDate}
                             onChange={this.handleChange}
                         />
                     </label><br/><br/>
+
                     
                     <input type='submit' value='submit'/>
                     

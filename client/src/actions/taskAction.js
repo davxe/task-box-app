@@ -16,7 +16,11 @@ export const startSetTask = () => {
         })
             .then((response) => {
                 const task = response.data 
+                console.log('taskget',task)
                 dispatch(setTask(task))
+            })
+            .catch((err)=>{
+                console.log(err)
             })
     }
 }
@@ -37,6 +41,9 @@ export const startRemoveTask=(id)=>{
         .then((response) => {
             const task = response.data 
             dispatch(removeTask(task._id))
+        })
+        .catch((err)=>{
+            console.log(err)
         })
     }
 }
@@ -66,8 +73,26 @@ export const startLoginTask=(formData,redirect)=>{
             }
         })
         .catch(err=>{
-            console.log(err)
+           console.log(err)
         })
         // console.log('action generator',formData)
+    }
+}
+
+export const updateTask=(id,data)=>{
+    return {type:'UPDATE_TASK',payload:{id,data}}
+}
+
+export const startUpdateTask=(id,status)=>{
+    return(dispatch)=>{
+        axios.put(`/tasks/${id}`,status,{headers:{'authorization':localStorage.getItem('authToken')}})
+            .then((response)=>{
+                console.log('update',response.data)
+                const updateData=response.data
+                dispatch(updateTask(id,updateData))
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
     }
 }
